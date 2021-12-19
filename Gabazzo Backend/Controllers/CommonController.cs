@@ -101,5 +101,25 @@ namespace Gabazzo_Backend.Controllers
                 return BadRequest();
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet("GetMessages")]
+        public async Task<IActionResult> GetMessages(string Sender,string Receiver)
+        {
+            try
+            {
+                var ResultMessages = await commonService.GetMessages(Sender,Receiver);
+                if (ResultMessages == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(ResultMessages);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
     }
 }

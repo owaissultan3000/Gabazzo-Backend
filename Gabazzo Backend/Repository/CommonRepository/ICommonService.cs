@@ -12,5 +12,6 @@ namespace Gabazzo_Backend.Repository.CommonRepository
         public Task<List<RegisteredContractor>> GetCompanies();
         public Task<List<ContractorService>> SearchService(string query);
         public Task<List<RegisteredContractor>> SearchCompany(string query);
+        public Task<List<Message>> GetMessages(string Sender,string Receiver);
     }
 }

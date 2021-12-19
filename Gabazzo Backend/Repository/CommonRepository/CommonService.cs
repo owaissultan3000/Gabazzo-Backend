@@ -24,6 +24,42 @@ namespace Gabazzo_Backend.Repository.CommonRepository
             return null;
         }
 
+        public string GetConversationId(string SenderId,string ReceiverId)
+        {
+            if(Db != null)
+            {
+                foreach (Conversation conversation in Db.Conversations)
+                {
+                    if ((conversation.MemberId == SenderId && conversation.ContractorId == ReceiverId) || (conversation.MemberId == ReceiverId && conversation.ContractorId == SenderId))
+                    {
+                        return conversation.ContractorId;
+                    }
+                }
+                return null;
+            }
+            return null;
+        }
+
+        public async Task<List<Message>> GetMessages(string SenderId, string ReceiverId)
+        {
+            if(Db != null)
+            {
+                List<Message> messages = new List<Message>();
+                string ConversationID = GetConversationId(SenderId, ReceiverId);
+
+                foreach(Message message in Db.Messages)
+                {
+                    if(message.ConversationId == ConversationID)
+                    {
+                        messages.Add(message);
+                    }
+                }
+                return messages;
+
+            }
+            return null;
+        }
+
         public async Task<List<ContractorService>> GetService()
         {
             if (Db != null)
