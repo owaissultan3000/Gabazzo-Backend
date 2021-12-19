@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Gabazzo_Backend.Models.DbModels;
+using Gabazzo_Backend.Repository.CommonRepository;
 using Gabazzo_Backend.Repository.ContractorRepository;
 using Gabazzo_Backend.Repository.UserRepository;
 using Microsoft.AspNetCore.Builder;
@@ -38,6 +39,7 @@ namespace Gabazzo_Backend
             services.AddDbContext<gabazzodbContext>(item => item.UseSqlServer(Configuration.GetConnectionString("GabazzoDBConnection")));
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IContractorServices, ContractorServices>();
+            services.AddScoped<ICommonService, CommonService>();
 
             services.AddCors(option => option.AddPolicy("GabazzoPolicy", builder => {
                 builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();

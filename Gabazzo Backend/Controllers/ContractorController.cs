@@ -162,44 +162,7 @@ namespace Gabazzo_Backend.Controllers
 
         }
 
-        [AllowAnonymous]
-        [HttpGet("GetAllServices")]
-        public async Task<IActionResult> GetService()
-        {
-            try
-            {
-                var Services = await contractorServices.GetService();
-                if (Services == null)
-                {
-                    return NotFound();
-                }
 
-                return Ok(Services);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
-
-        [AllowAnonymous]
-        [HttpGet("GetAllCompanies")]
-        public async Task<IActionResult> GetCompanies()
-        {
-            try
-            {
-                var Companies = await contractorServices.GetCompanies();
-                if (Companies == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(Companies);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
+        
     }
 }

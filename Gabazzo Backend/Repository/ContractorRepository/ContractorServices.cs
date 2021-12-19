@@ -135,16 +135,6 @@ namespace Gabazzo_Backend.Repository.ContractorRepository
             return "Unable to create service try again";
         }
 
-        public async Task<List<RegisteredContractor>> GetCompanies()
-        {
-            if(Db != null)
-            {
-                return await Db.RegisteredContractors.ToListAsync();
-
-            }
-            return null;
-        }
-
         public async Task<RegisteredContractor> GetContractor(string email)
         {
             if (Db != null)
@@ -156,13 +146,5 @@ namespace Gabazzo_Backend.Repository.ContractorRepository
             return null;
         }
 
-        public async Task<List<ContractorService>> GetService()
-        {
-            if(Db != null)
-            {
-              return await Db.ContractorServices.ToListAsync();
-            }
-            return null;
-        }
     }
 }
