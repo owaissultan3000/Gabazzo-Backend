@@ -81,5 +81,25 @@ namespace Gabazzo_Backend.Controllers
                 return BadRequest();
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet("SearchCompany")]
+        public async Task<IActionResult> SearchCompany(string query)
+        {
+            try
+            {
+                var SearchResult = await commonService.SearchCompany(query);
+                if (SearchResult == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(SearchResult);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
     }
 }
