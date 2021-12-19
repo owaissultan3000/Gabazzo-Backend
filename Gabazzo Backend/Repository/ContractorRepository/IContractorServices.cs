@@ -13,6 +13,8 @@ namespace Gabazzo_Backend.Repository.ContractorRepository
         public Task<string> CreateContractor(ContractorRegistration contractorRegistration);
         public Task<string> CreatePortolio(Portfolio portfolio);
         public Task<string> CreateService(Service service);
+        public Task<List<ContractorService>> GetService();
+        public Task<List<RegisteredContractor>> GetCompanies();
 
 
     }

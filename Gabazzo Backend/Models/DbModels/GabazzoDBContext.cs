@@ -19,6 +19,8 @@ namespace Gabazzo_Backend.Models.DbModels
 
         public virtual DbSet<ContractorPortfolio> ContractorPortfolios { get; set; }
         public virtual DbSet<ContractorService> ContractorServices { get; set; }
+        public virtual DbSet<Conversation> Conversations { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<RegisteredContractor> RegisteredContractors { get; set; }
         public virtual DbSet<RegisteredUser> RegisteredUsers { get; set; }
 
@@ -129,6 +131,63 @@ namespace Gabazzo_Backend.Models.DbModels
                     .HasForeignKey(d => d.ContractorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Contracto__Contr__0B5CAFEA");
+            });
+
+            modelBuilder.Entity<Conversation>(entity =>
+            {
+                entity.ToTable("Conversation");
+
+                entity.Property(e => e.ConversationId).HasMaxLength(1000);
+
+                entity.Property(e => e.ContractorId)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MemberId)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Contractor)
+                    .WithMany(p => p.Conversations)
+                    .HasForeignKey(d => d.ContractorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Conversat__Contr__1B9317B3");
+
+                entity.HasOne(d => d.Member)
+                    .WithMany(p => p.Conversations)
+                    .HasForeignKey(d => d.MemberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Conversat__Membe__1C873BEC");
+            });
+
+            modelBuilder.Entity<Message>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("Message");
+
+                entity.Property(e => e.ConversationId)
+                    .IsRequired()
+                    .HasMaxLength(1000)
+                    .HasColumnName("ConversationID");
+
+                entity.Property(e => e.ReceiverId)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SenderId)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Texts).IsUnicode(false);
+
+                entity.HasOne(d => d.Conversation)
+                    .WithMany()
+                    .HasForeignKey(d => d.ConversationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Message__Convers__1E6F845E");
             });
 
             modelBuilder.Entity<RegisteredContractor>(entity =>
