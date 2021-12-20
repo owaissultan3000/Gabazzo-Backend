@@ -135,6 +135,15 @@ namespace Gabazzo_Backend.Repository.ContractorRepository
             return "Unable to create service try again";
         }
 
+        public async Task<RegisteredContractor> GetCompanyById(string Id)
+        {
+            if(Db != null)
+            {
+                return await Db.RegisteredContractors.FirstOrDefaultAsync(u => u.ContractorId == Id);
+            }
+            return null;
+        }
+
         public async Task<RegisteredContractor> GetContractor(string email)
         {
             if (Db != null)
@@ -146,5 +155,47 @@ namespace Gabazzo_Backend.Repository.ContractorRepository
             return null;
         }
 
+        public async Task<List<ContractorPortfolio>> GetPortfolioById(string Id)
+        {
+            if (Db != null)
+            {
+                List<ContractorPortfolio> contractorPortfolios = new List<ContractorPortfolio>();
+                foreach(ContractorPortfolio contractorPortfolio in Db.ContractorPortfolios)
+                {
+                    if(contractorPortfolio.ContractorId == Id)
+                    {
+                        contractorPortfolios.Add(contractorPortfolio);
+                    }
+                }
+                return contractorPortfolios;
+            }
+            return null;
+        }
+
+        public async Task<List<ContractorService>> GetServiceByContractorId(string Id)
+        {
+            if(Db != null)
+            {
+                List<ContractorService> contractorServices = new List<ContractorService>();
+                foreach (ContractorService service in Db.ContractorServices)
+                {
+                    if(service.ContractorId == Id)
+                    {
+                        contractorServices.Add(service);
+                    }
+                }
+                return contractorServices;
+            }
+            return null;
+        }
+
+        public async Task<ContractorService> GetServiceByServiceId(string Id)
+        {
+            if (Db != null)
+            {
+               return await Db.ContractorServices.FirstOrDefaultAsync(u => u.ServicesId == Id);
+            }
+            return null;
+        }
     }
 }

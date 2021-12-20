@@ -164,7 +164,88 @@ namespace Gabazzo_Backend.Controllers
 
         }
 
+        [AllowAnonymous]
+        [HttpGet("GetPortfolioById")]
+        public async Task<IActionResult> GetPortfolioById(string Id)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var tempPortfolio = await contractorServices.GetPortfolioById(Id);
+                    if (tempPortfolio != null)
+                    {
+                        return Ok(tempPortfolio);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex);
+                }
+            }
+            else return BadRequest();
 
-        
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GetServiceByServiceId")]
+        public async Task<IActionResult> GetServiceByServiceId(string Id)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var tempservice = await contractorServices.GetServiceByServiceId(Id);
+                    if (tempservice != null)
+                    {
+                        return Ok(tempservice);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex);
+                }
+            }
+            else return BadRequest();
+
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GetServiceByContractorId")]
+        public async Task<IActionResult> GetServiceByContractorId(string Id)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var tempservices = await contractorServices.GetServiceByContractorId(Id);
+                    if (tempservices != null)
+                    {
+                        return Ok(tempservices);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex);
+                }
+            }
+            else return BadRequest();
+
+        }
+
+
+
     }
 }
