@@ -76,7 +76,9 @@ namespace Gabazzo_Backend.Controllers
                     var tempuser = await contractorServices.CreateContractor(contractorRegistration);
                     if (tempuser != null)
                     {
-                        return Ok(tempuser);
+                        var tokenString = GenerateJSONWebToken();
+                        var response = Ok(new { tokenString });
+                        return Ok(response);
                     }
                     else
                     {

@@ -139,34 +139,34 @@ namespace Gabazzo_Backend.Models.DbModels
 
                 entity.Property(e => e.ConversationId).HasMaxLength(1000);
 
-                entity.Property(e => e.ContractorId)
+                entity.Property(e => e.Receiver)
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.MemberId)
+                entity.Property(e => e.Sender)
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.Contractor)
+                entity.HasOne(d => d.ReceiverNavigation)
                     .WithMany(p => p.Conversations)
-                    .HasForeignKey(d => d.ContractorId)
+                    .HasForeignKey(d => d.Receiver)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Conversat__Contr__1B9317B3");
+                    .HasConstraintName("FK__Conversat__Recei__2F9A1060");
 
-                entity.HasOne(d => d.Member)
+                entity.HasOne(d => d.SenderNavigation)
                     .WithMany(p => p.Conversations)
-                    .HasForeignKey(d => d.MemberId)
+                    .HasForeignKey(d => d.Sender)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Conversat__Membe__1C873BEC");
+                    .HasConstraintName("FK__Conversat__Sende__2EA5EC27");
             });
 
             modelBuilder.Entity<Message>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("Message");
+
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.ConversationId)
                     .IsRequired()
@@ -184,10 +184,10 @@ namespace Gabazzo_Backend.Models.DbModels
                 entity.Property(e => e.Texts).IsUnicode(false);
 
                 entity.HasOne(d => d.Conversation)
-                    .WithMany()
+                    .WithMany(p => p.Messages)
                     .HasForeignKey(d => d.ConversationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Message__Convers__1E6F845E");
+                    .HasConstraintName("FK__Message__Convers__345EC57D");
             });
 
             modelBuilder.Entity<RegisteredContractor>(entity =>

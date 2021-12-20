@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gabazzo_Backend.Models.InputModels.CommonModels;
 using Gabazzo_Backend.Repository.CommonRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -119,6 +120,26 @@ namespace Gabazzo_Backend.Controllers
             catch (Exception)
             {
                 return BadRequest();
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("SendMessage")]
+        public async Task<IActionResult> SendMessage([FromBody] MessageModel messageModel)
+        {
+            try
+            {
+                var Conformation = await commonService.SendMessage(messageModel);
+                if (Conformation == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(Conformation);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
             }
         }
     }

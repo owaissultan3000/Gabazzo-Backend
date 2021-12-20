@@ -1,4 +1,6 @@
 ﻿using Gabazzo_Backend.Models.DbModels;
+using Gabazzo_Backend.Models.InputModels.CommonModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,9 +32,9 @@ namespace Gabazzo_Backend.Repository.CommonRepository
             {
                 foreach (Conversation conversation in Db.Conversations)
                 {
-                    if ((conversation.MemberId == SenderId && conversation.ContractorId == ReceiverId) || (conversation.MemberId == ReceiverId && conversation.ContractorId == SenderId))
+                    if ((conversation.Sender == SenderId && conversation.Receiver == ReceiverId) || (conversation.Sender == ReceiverId && conversation.Receiver == SenderId))
                     {
-                        return conversation.ContractorId;
+                        return conversation.ConversationId;
                     }
                 }
                 return null;
@@ -104,5 +106,57 @@ namespace Gabazzo_Backend.Repository.CommonRepository
             return null;
             
         }
+
+        public async Task<string> SendMessage(MessageModel messageModel)
+        {
+            if (Db != null)
+            {
+                string ConversationID = GetConversationId(messageModel.SenderID, messageModel.ReceiverID);
+                if (ConversationID == null)
+                {
+                    string conversationid = Guid.NewGuid().ToString();
+                    Conversation conversation = new Conversation
+                    {
+                        ConversationId = conversationid,
+                        Sender = messageModel.SenderID,
+                        Receiver = messageModel.ReceiverID
+                    };
+
+                    Message message = new Message
+                    {
+                        ConversationId = conversation.ConversationId,
+                        Texts = messageModel.MessageBody,
+                        SenderId = messageModel.SenderID,
+                        ReceiverId = messageModel.ReceiverID,
+                        
+                    };
+                    await Db.Conversations.AddAsync(conversation);
+                    await Db.SaveChangesAsync();
+                    await Db.Messages.AddAsync(message);
+                    await Db.SaveChangesAsync();
+                    
+                    
+                    return "Message Sent";
+                }
+                else
+                {
+                    Message message = new Message
+                    {
+                        ConversationId = ConversationID,
+                        SenderId = messageModel.SenderID,
+                        ReceiverId = messageModel.ReceiverID,
+                        Texts = messageModel.MessageBody
+                    };
+
+                    await Db.Messages.AddAsync(message);
+                    await Db.SaveChangesAsync();
+                    return "Message Sent";
+
+                }
+                
+            }
+            return null;
+        }    
+        
     }
 }
