@@ -65,6 +65,60 @@ namespace Gabazzo_Backend.Repository.ContractorRepository
 
             return "Something went wrong try again";
         }
+        public string GetConversationId(string SenderId, string ReceiverId)
+        {
+            if (Db != null)
+            {
+                foreach (Conversation conversation in Db.Conversations)
+                {
+                    if ((conversation.Sender == SenderId && conversation.Receiver == ReceiverId) || (conversation.Sender == ReceiverId && conversation.Receiver == SenderId))
+                    {
+                        return conversation.ConversationId;
+                    }
+                }
+                return null;
+            }
+            return null;
+        }
+
+        public async Task<string> CreateOffer(Offer offer)
+        {
+            if (Db != null)
+            {
+                string conversationId = GetConversationId(offer.Sender, offer.Receiver);
+                    if (conversationId == null)
+                {
+                    string conversationid = Guid.NewGuid().ToString();
+                    Conversation conversation = new Conversation
+                    {
+                        ConversationId = conversationid,
+                        Sender = offer.Sender,
+                        Receiver = offer.Receiver
+                    };
+
+                    Message message = new Message
+                    {
+                        ConversationId = conversationid,
+                        Texts = "",
+                        SenderId = offer.Sender,
+                        ReceiverId = offer.Receiver
+                    };
+
+                    await Db.Conversations.AddAsync(conversation);
+                    
+                    await Db.Messages.AddAsync(message);
+                    
+                    await Db.Offers.AddAsync(offer);
+
+                    await Db.SaveChangesAsync();
+
+                    return "Offer Successfully Created";
+
+                }
+                
+            }
+            return null;
+        }
 
         public async Task<string> CreatePortolio(Portfolio portfolio)
         {
@@ -133,6 +187,48 @@ namespace Gabazzo_Backend.Repository.ContractorRepository
 
             }
             return "Unable to create service try again";
+        }
+
+        public async Task<string> DeletePortfolio(string id)
+        {
+            if (Db != null)
+            {
+                
+                ContractorPortfolio contractorPortfolio = await Db.ContractorPortfolios.FirstOrDefaultAsync(u => u.PortfolioId == id);
+
+                if (contractorPortfolio != null)
+                {
+                    
+                    Db.ContractorPortfolios.Remove(contractorPortfolio);
+
+                    
+                     await Db.SaveChangesAsync();
+                }
+                return  "Portfolio Deleted Successfully";
+            }
+
+            return "Unable to delete portfolio try again";
+        }
+
+        public async Task<string> DeleteService(string id)
+        {
+            if (Db != null)
+            {
+
+                ContractorService contractorService = await Db.ContractorServices.FirstOrDefaultAsync(u => u.ServicesId == id);
+
+                if (contractorService != null)
+                {
+
+                    Db.ContractorServices.Remove(contractorService);
+
+
+                    await Db.SaveChangesAsync();
+                }
+                return "Service Deleted Successfully";
+            }
+
+            return "Unable to delete service try again";
         }
 
         public async Task<RegisteredContractor> GetCompanyById(string Id)

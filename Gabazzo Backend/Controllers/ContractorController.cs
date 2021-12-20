@@ -246,6 +246,88 @@ namespace Gabazzo_Backend.Controllers
         }
 
 
+        [AllowAnonymous]
+        [HttpDelete("DeletePortfolioById")]
+        public async Task<IActionResult> DeletePortfolio(string Id)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var tempportfolio = await contractorServices.DeletePortfolio(Id);
+                    if (tempportfolio != null)
+                    {
+                        return Ok(tempportfolio);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex);
+                }
+            }
+            else return BadRequest();
+
+        }
+
+        [AllowAnonymous]
+        [HttpDelete("DeleteServiceById")]
+        public async Task<IActionResult> DeleteService(string Id)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var tempservice = await contractorServices.DeleteService(Id);
+                    if (tempservice != null)
+                    {
+                        return Ok(tempservice);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex);
+                }
+            }
+            else return BadRequest();
+
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Createoffer")]
+        public async Task<IActionResult> CreateOffer([FromBody]Offer offer)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var tempOrder = await contractorServices.CreateOffer(offer);
+                    if (tempOrder != null)
+                    {
+                        return Ok(tempOrder);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex);
+                }
+            }
+            else return BadRequest();
+
+        }
+
+
 
     }
 }

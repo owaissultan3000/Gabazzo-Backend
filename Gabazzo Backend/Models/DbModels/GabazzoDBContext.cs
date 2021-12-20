@@ -21,6 +21,7 @@ namespace Gabazzo_Backend.Models.DbModels
         public virtual DbSet<ContractorService> ContractorServices { get; set; }
         public virtual DbSet<Conversation> Conversations { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<Offer> Offers { get; set; }
         public virtual DbSet<RegisteredContractor> RegisteredContractors { get; set; }
         public virtual DbSet<RegisteredUser> RegisteredUsers { get; set; }
 
@@ -188,6 +189,68 @@ namespace Gabazzo_Backend.Models.DbModels
                     .HasForeignKey(d => d.ConversationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Message__Convers__345EC57D");
+            });
+
+            modelBuilder.Entity<Offer>(entity =>
+            {
+                entity.ToTable("Offer");
+
+                entity.Property(e => e.OfferId).HasMaxLength(100);
+
+                entity.Property(e => e.ConversationId)
+                    .IsRequired()
+                    .HasMaxLength(1000)
+                    .HasColumnName("ConversationID");
+
+                entity.Property(e => e.Notes).IsUnicode(false);
+
+                entity.Property(e => e.Receiver)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Sender)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Service)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Status)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Type)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Conversation)
+                    .WithMany(p => p.Offers)
+                    .HasForeignKey(d => d.ConversationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Offer__Conversat__5006DFF2");
+
+                entity.HasOne(d => d.ReceiverNavigation)
+                    .WithMany(p => p.Offers)
+                    .HasForeignKey(d => d.Receiver)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Offer__Receiver__51EF2864");
+
+                entity.HasOne(d => d.SenderNavigation)
+                    .WithMany(p => p.Offers)
+                    .HasForeignKey(d => d.Sender)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Offer__Sender__50FB042B");
+
+                entity.HasOne(d => d.ServiceNavigation)
+                    .WithMany(p => p.Offers)
+                    .HasForeignKey(d => d.Service)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Offer__Service__52E34C9D");
             });
 
             modelBuilder.Entity<RegisteredContractor>(entity =>

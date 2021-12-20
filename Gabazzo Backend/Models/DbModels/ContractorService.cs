@@ -7,6 +7,11 @@ namespace Gabazzo_Backend.Models.DbModels
 {
     public partial class ContractorService
     {
+        public ContractorService()
+        {
+            Offers = new HashSet<Offer>();
+        }
+
         public string ServicesId { get; set; }
         public string ContractorId { get; set; }
         public string Title { get; set; }
@@ -18,5 +23,6 @@ namespace Gabazzo_Backend.Models.DbModels
         public string Description { get; set; }
 
         public virtual RegisteredContractor Contractor { get; set; }
+        public virtual ICollection<Offer> Offers { get; set; }
     }
 }

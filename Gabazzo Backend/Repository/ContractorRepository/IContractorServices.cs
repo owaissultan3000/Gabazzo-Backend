@@ -16,10 +16,9 @@ namespace Gabazzo_Backend.Repository.ContractorRepository
         public Task<List<ContractorPortfolio>> GetPortfolioById(string Id);
         public Task<ContractorService> GetServiceByServiceId(string Id);
         public Task<List<ContractorService>> GetServiceByContractorId(string Id);
-
         public Task<RegisteredContractor> GetCompanyById(string Id);
-
-
-
+        public Task<string> CreateOffer(Offer offer);
+        public Task<string> DeletePortfolio(string id);
+        public Task<string> DeleteService(string id);
     }
 }

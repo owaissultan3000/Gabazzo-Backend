@@ -21,7 +21,6 @@ namespace Gabazzo_Backend.Repository.CommonRepository
             if (Db != null)
             {
                 return await Db.RegisteredContractors.ToListAsync();
-
             }
             return null;
         }

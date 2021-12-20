@@ -10,6 +10,7 @@ namespace Gabazzo_Backend.Models.DbModels
         public Conversation()
         {
             Messages = new HashSet<Message>();
+            Offers = new HashSet<Offer>();
         }
 
         public string ConversationId { get; set; }
@@ -19,5 +20,6 @@ namespace Gabazzo_Backend.Models.DbModels
         public virtual RegisteredUser ReceiverNavigation { get; set; }
         public virtual RegisteredContractor SenderNavigation { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
+        public virtual ICollection<Offer> Offers { get; set; }
     }
 }

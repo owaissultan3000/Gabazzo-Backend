@@ -12,6 +12,7 @@ namespace Gabazzo_Backend.Models.DbModels
             ContractorPortfolios = new HashSet<ContractorPortfolio>();
             ContractorServices = new HashSet<ContractorService>();
             Conversations = new HashSet<Conversation>();
+            Offers = new HashSet<Offer>();
         }
 
         public string ContractorId { get; set; }
@@ -30,5 +31,6 @@ namespace Gabazzo_Backend.Models.DbModels
         public virtual ICollection<ContractorPortfolio> ContractorPortfolios { get; set; }
         public virtual ICollection<ContractorService> ContractorServices { get; set; }
         public virtual ICollection<Conversation> Conversations { get; set; }
+        public virtual ICollection<Offer> Offers { get; set; }
     }
 }
